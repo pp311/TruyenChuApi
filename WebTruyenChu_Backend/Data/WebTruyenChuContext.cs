@@ -29,7 +29,7 @@ public class WebTruyenChuContext : IdentityDbContext<User,IdentityRole<int>,int>
             // the CreatedAt and CreatedBy properties
             if (entityEntry.State == EntityState.Added)
             {
-                ((AuditableEntity)entityEntry.Entity).CreatedAt = DateTime.UtcNow;
+                ((AuditableEntity)entityEntry.Entity).CreatedAt = DateTime.Now;
                 //((AuditableEntity)entityEntry.Entity).CreatedBy = this.httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? "MyApp";
             }
             else
@@ -43,7 +43,7 @@ public class WebTruyenChuContext : IdentityDbContext<User,IdentityRole<int>,int>
 
             // In any case we always want to set the properties
             // ModifiedAt and ModifiedBy
-            ((AuditableEntity)entityEntry.Entity).ModifiedAt = DateTime.UtcNow;
+            ((AuditableEntity)entityEntry.Entity).ModifiedAt = DateTime.Now;
             //((AuditableEntity)entityEntry.Entity).ModifiedBy = this.httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? "MyApp";
         }
         return await base.SaveChangesAsync(cancellationToken);
@@ -57,7 +57,7 @@ public class WebTruyenChuContext : IdentityDbContext<User,IdentityRole<int>,int>
     {
         base.OnModelCreating(modelBuilder);
         
-        modelBuilder.ApplyConfiguration(new RoleConfiguration());
+        /*modelBuilder.ApplyConfiguration(new RoleConfiguration());
         modelBuilder.ApplyConfiguration(new UserConfiguration());
         modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
         modelBuilder.ApplyConfiguration(new GenreConfiguration());
@@ -71,8 +71,8 @@ public class WebTruyenChuContext : IdentityDbContext<User,IdentityRole<int>,int>
         modelBuilder.ApplyConfiguration(new ChapterCommentConfiguration());
         modelBuilder.ApplyConfiguration(new BookCommentConfiguration());
         modelBuilder.ApplyConfiguration(new SavedBookConfiguration());
-        modelBuilder.ApplyConfiguration(new ReadingHistoryConfiguration());
-
+        modelBuilder.ApplyConfiguration(new ReadingHistoryConfiguration()); */
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(WebTruyenChuContext).Assembly);
     }
     
     public DbSet<Author> Authors { get; set; }

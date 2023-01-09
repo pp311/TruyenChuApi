@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.ConfigureCors();
+builder.Services.AddServices();
 builder.Services.AddDbContext<WebTruyenChuContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("WebTruyenChuContext"));
@@ -18,7 +19,7 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(opt =>
     opt.Password.RequiredLength = 6;
 }).AddEntityFrameworkStores<WebTruyenChuContext>().AddDefaultTokenProviders();
 builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

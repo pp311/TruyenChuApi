@@ -63,7 +63,6 @@
 /home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/obj/Debug/net6.0/scopedcss/bundle/WebTruyenChu_Backend.styles.css
 /home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/obj/Debug/net6.0/WebTruyenChu_Backend.csproj.CopyComplete
 /home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/obj/Debug/net6.0/WebTruyenChu_Backend.dll
-/home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/obj/Debug/net6.0/refint/WebTruyenChu_Backend.dll
 /home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/obj/Debug/net6.0/WebTruyenChu_Backend.pdb
 /home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/obj/Debug/net6.0/WebTruyenChu_Backend.genruntimeconfig.cache
 /home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/obj/Debug/net6.0/ref/WebTruyenChu_Backend.dll
@@ -72,3 +71,4 @@
 /home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/Newtonsoft.Json.dll
 /home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/Newtonsoft.Json.Bson.dll
 /home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/Swashbuckle.AspNetCore.Newtonsoft.dll
+/home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/ref/WebTruyenChu_Backend.dll

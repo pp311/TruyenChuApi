@@ -34,14 +34,18 @@ public class AuthorService : IAuthorService
 
     public async Task<GetAuthorDto?> GetAuthorById(int id)
     {
-        var author = await _context.Authors.AsNoTracking().FirstOrDefaultAsync(x => x.AuthorId == id);
+        var author = await _context.Authors.AsNoTracking()
+                .Include(x => x.Books)
+                .ThenInclude(x => x.BookGenres)
+                .ThenInclude(x => x.Genre)
+                .FirstOrDefaultAsync(x => x.AuthorId == id);
         return _mapper.Map<GetAuthorDto>(author);
     }
 
     public async Task DeleteAuthor(int id)
     {
-        var author = await _context.Authors.FindAsync(id);
-        _context.Remove(author!);
+        var author = new Author { AuthorId = id };
+        _context.Remove(author);
         await _context.SaveChangesAsync();
     }
 

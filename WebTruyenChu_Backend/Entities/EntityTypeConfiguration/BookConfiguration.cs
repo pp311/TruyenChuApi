@@ -8,7 +8,8 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
     public void Configure(EntityTypeBuilder<Book> builder)
     {
         builder.Property(p => p.BookName).IsRequired().HasMaxLength(256);
-        builder.Property(p => p.Description).HasMaxLength(1000);
+        //Description co the dai hon 4000 bytes
+        //builder.Property(p => p.Description).HasMaxLength(1000);
         builder.Property(p => p.Slug).HasMaxLength(256);
         builder.Property(p => p.Status).IsRequired().HasMaxLength(50);
         builder.Property(p => p.PosterUrl).HasMaxLength(256);

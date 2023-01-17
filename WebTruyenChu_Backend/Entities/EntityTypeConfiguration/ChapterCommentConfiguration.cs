@@ -9,6 +9,7 @@ public class ChapterCommentConfiguration : IEntityTypeConfiguration<ChapterComme
     {
         builder.HasOne(cc => cc.Chapter)
             .WithMany(c => c.ChapterComments)
-            .HasForeignKey(cc => cc.ChapterId);
+            .HasForeignKey(cc => cc.ChapterId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

@@ -4,7 +4,7 @@ namespace WebTruyenChu_Backend.DTOs;
 
 public class AddAuthorDto
 {
-    [MaxLength(256, ErrorMessage = "Author name can't be longer than 256 characters")]
-    [Required(ErrorMessage = "AuthorName is required")]
+    [MaxLength(256)]
+    [Required]
     public string? AuthorName { get; set; }
 }

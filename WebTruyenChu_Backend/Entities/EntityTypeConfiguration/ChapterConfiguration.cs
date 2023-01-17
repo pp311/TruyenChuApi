@@ -13,6 +13,6 @@ public class ChapterConfiguration : IEntityTypeConfiguration<Chapter>
         builder.HasOne(c => c.Book)
             .WithMany(b => b.Chapters)
             .HasForeignKey(c => c.BookId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

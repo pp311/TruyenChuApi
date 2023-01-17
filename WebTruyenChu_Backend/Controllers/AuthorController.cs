@@ -30,7 +30,7 @@ public class AuthorController : ControllerBase
         return Ok(await _authorService.GetAllAuthor());
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:int}", Name = "GetAuthorById")]
     public async Task<ActionResult<GetAuthorDto>> GetAuthorById(int id)
     {
         var authorDto = await _authorService.GetAuthorById(id);

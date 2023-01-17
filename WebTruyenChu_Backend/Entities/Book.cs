@@ -1,7 +1,15 @@
 namespace WebTruyenChu_Backend.Entities;
 
-public class Book
+public class Book : AuditableEntity
 {
+    public Book()
+    {
+        SavedBook = new List<SavedBook>();
+        Chapters = new List<Chapter>();
+        BookComments = new List<BookComment>();
+        BookGenres = new List<BookGenre>();
+        Reviews = new List<Review>();
+    }
     public int BookId { get; set; }
     public string BookName { get; set; } = null!;
     public string? Description { get; set; }
@@ -14,9 +22,9 @@ public class Book
 
     public virtual Author? Author { get; set; }
 
-    public virtual ICollection<SavedBook>? SavedBook { get; set; }
-    public virtual ICollection<Chapter>? Chapters { get; set; }
-    public virtual ICollection<BookGenre>? BookGenres { get; set; } 
-    public virtual ICollection<Review>? Reviews { get; set; }
-    public virtual ICollection<BookComment>? BookComments { get; set; }
+    public virtual ICollection<SavedBook> SavedBook { get; set; }
+    public virtual ICollection<Chapter> Chapters { get; set; }
+    public virtual ICollection<BookGenre> BookGenres { get; set; } 
+    public virtual ICollection<Review> Reviews { get; set; }
+    public virtual ICollection<BookComment> BookComments { get; set; }
 }

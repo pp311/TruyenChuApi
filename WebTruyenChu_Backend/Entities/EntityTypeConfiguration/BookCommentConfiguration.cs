@@ -9,6 +9,7 @@ public class BookCommentConfiguration : IEntityTypeConfiguration<BookComment>
     {
         builder.HasOne(bc => bc.Book)
             .WithMany(b => b.BookComments)
-            .HasForeignKey(bc => bc.BookId);
+            .HasForeignKey(bc => bc.BookId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

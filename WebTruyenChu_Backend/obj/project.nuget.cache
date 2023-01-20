@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "ou13cz5oD4WAfMlE3ZbfTZIErWH2v47TnpJs+mPw/uKUyGkDRUwuPHbTStR7kYssgVvV6KBpFGRlUoCmLhdYNQ==",
+  "dgSpecHash": "XF4Ac9u0NADTyGAt0OZv5HJ7Y0/gwUcYTqNVuidn2FeQT2INJZ6okFOG+CIihLmefP+5fM8stGv+qMVQuu6ppw==",
   "success": true,
   "projectFilePath": "/home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/WebTruyenChu_Backend.csproj",
   "expectedPackageFiles": [
     "/home/pp311/.nuget/packages/automapper/12.0.0/automapper.12.0.0.nupkg.sha512",
     "/home/pp311/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.0/automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
+    "/home/pp311/.nuget/packages/diacritics/3.3.14/diacritics.3.3.14.nupkg.sha512",
     "/home/pp311/.nuget/packages/humanizer.core/2.8.26/humanizer.core.2.8.26.nupkg.sha512",
     "/home/pp311/.nuget/packages/microsoft.aspnetcore.authentication/2.2.0/microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "/home/pp311/.nuget/packages/microsoft.aspnetcore.authentication.abstractions/2.2.0/microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",

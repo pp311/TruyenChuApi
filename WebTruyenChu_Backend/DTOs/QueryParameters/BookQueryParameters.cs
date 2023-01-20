@@ -2,7 +2,7 @@ namespace WebTruyenChu_Backend.DTOs.QueryParameters;
 
 public class BookQueryParameters : PagingParameters
 {
-   public string OrderBy { get; set; } = Constants.OrderBy.LatestUpdated;
+   public string OrderBy { get; set; } = Constants.OrderBy.LatestUploaded;
    public bool IsDescending { get; set; } = true;
    public string? Status { get; set; }
    public List<int>? GenreId { get; set; }

@@ -72,3 +72,4 @@
 /home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/Newtonsoft.Json.Bson.dll
 /home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/Swashbuckle.AspNetCore.Newtonsoft.dll
 /home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/ref/WebTruyenChu_Backend.dll
+/home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/Diacritics.dll

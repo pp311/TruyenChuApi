@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using AutoMapper;
+using Diacritics.Extensions;
 using Microsoft.EntityFrameworkCore;
 using WebTruyenChu_Backend.Constants;
 using WebTruyenChu_Backend.Data;
@@ -57,8 +59,6 @@ public class BookService : IBookService
         var query = _context.Books
             .Include(b => b.BookGenres)
             .ThenInclude(bg => bg.Genre)
-            .Include(b => b.Chapters)
-            .ThenInclude(c => c.ReadingHistory)
             .Include(b => b.Author)
             .AsSplitQuery()
             .AsNoTracking();
@@ -73,25 +73,43 @@ public class BookService : IBookService
         }
         query = filter.OrderBy switch
         {
-            OrderBy.LatestUpdated => query.OrderBy(b => b.Chapters.Max(c => c.CreatedAt)),
+            OrderBy.LatestUpdated => query.OrderBy(b => b.ModifiedAt),
             OrderBy.LatestUploaded => query.OrderBy(b => b.CreatedAt),
-            OrderBy.RatingScore => query.OrderBy(b => b.Reviews.Average(rc => rc.Score)),
-            OrderBy.RatingCount => query.OrderBy(b => b.Reviews.Count),
+            OrderBy.RatingScore => query.Include(b => b.Reviews)
+                .OrderBy(b => b.Reviews.Average(rc => rc.Score)),
+            OrderBy.RatingCount => query.Include(b => b.Reviews)
+                .OrderBy(b => b.Reviews.Count),
             OrderBy.ViewCount => query.OrderBy(b => b.ViewCount),
-            OrderBy.ViewCountDay => query.OrderBy(b =>
+            OrderBy.ViewCountDay => query.Include(b => b.Chapters).
+                ThenInclude(c => c.ReadingHistory)
+                .OrderBy(b =>
                 b.Chapters.SelectMany(c => c.ReadingHistory.Where(rh => rh.CreatedAt > DateTime.Now.AddDays(-1)))
                     .Count()),
-            OrderBy.ViewCountWeek => query.OrderBy(b =>
+            OrderBy.ViewCountWeek => query.Include(b => b.Chapters)
+                .ThenInclude(c => c.ReadingHistory)
+                .OrderBy(b =>
                 b.Chapters.SelectMany(c => c.ReadingHistory.Where(rh => rh.CreatedAt > DateTime.Now.AddDays(-7)))
                     .Count()),
-            OrderBy.ViewCountMonth => query.OrderBy(b =>
+            OrderBy.ViewCountMonth => query.Include(b => b.Chapters)
+                .ThenInclude(c => c.ReadingHistory)
+                .OrderBy(b =>
                 b.Chapters.SelectMany(c => c.ReadingHistory.Where(rh => rh.CreatedAt > DateTime.Now.AddMonths(-1)))
                     .Count()),
-            OrderBy.ViewCountYear => query.OrderBy(b =>
+            OrderBy.ViewCountYear => query.Include(b => b.Chapters)
+                .ThenInclude(c => c.ReadingHistory)
+                .OrderBy(b =>
                 b.Chapters.SelectMany(c => c.ReadingHistory.Where(rh => rh.CreatedAt > DateTime.Now.AddYears(-1)))
                     .Count()),
             _ => query
         };
+        if (filter.KeyWord is not null)
+        {
+            string keyWord = filter.KeyWord.RemoveDiacritics();
+            query = query.Where(b =>
+                EF.Functions.Collate(b.BookName, "Latin1_General_CI_AI").Contains(keyWord) 
+                || EF.Functions.Collate(b.Author.AuthorName, "Latin1_General_CI_AI").Contains(keyWord));
+        }
+        
         var totalCount = await query.CountAsync();
         //default: true
         if (filter.IsDescending)

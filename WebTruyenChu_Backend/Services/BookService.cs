@@ -121,6 +121,17 @@ public class BookService : IBookService
         return new PagedResult<List<BookOverviewDto>>(result, totalCount, filter.PageIndex, filter.PageSize);
     }
 
+    public async Task<List<BookOverviewDto>> GetRandomBooks(int limit)
+    {
+        return _mapper.Map<List<BookOverviewDto>>(await _context.Books
+            .Include(b => b.Author)
+            .Include(b => b.BookGenres)
+            .ThenInclude(bg => bg.Genre)
+            .OrderBy(b => Guid.NewGuid())
+            .Take(limit)
+            .ToListAsync());
+    }
+
     public async Task<GetBookDto?> UpdateBook(UpdateBookDto updateBookDto)
     {
         var book = await _context.Books.Include(b => b.BookGenres)

@@ -8,7 +8,7 @@ public class Profiles : Profile
 {
     public Profiles()
     {
-        CreateMap<Genre, GenreDto>();
+        CreateMap<Genre, GenreDto>().ReverseMap();
         CreateMap<AddAuthorDto, Author>();
         CreateMap<UpdateAuthorDto, Author>();
         CreateMap<Author, GetAuthorDto>();

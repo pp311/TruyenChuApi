@@ -11,5 +11,7 @@ public interface IBookService
     Task<GetBookDto?> GetBookById(int id);
     Task DeleteBook(int id);
     Task<PagedResult<List<BookOverviewDto>>> GetBooks(BookQueryParameters filter);
+    
+    Task<List<BookOverviewDto>> GetRandomBooks(int limit);
     Task<GetBookDto?> UpdateBook(UpdateBookDto updateBookDto);
 }

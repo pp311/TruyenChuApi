@@ -50,6 +50,12 @@ public class BookController :ControllerBase
        return Ok(bookList.Data);
    }
 
+   [HttpGet("random")]
+   public async Task<ActionResult<IEnumerable<BookOverviewDto>>> GetRandomBooks(int limit = 10)
+   {
+       return Ok(await _bookService.GetRandomBooks(limit));
+   }
+
    [HttpDelete("{id:int}")]
    public async Task<ActionResult> DeleteBook(int id)
    {

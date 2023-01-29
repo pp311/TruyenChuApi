@@ -8,7 +8,7 @@ using WebTruyenChu_Backend.Services.Interfaces;
 namespace WebTruyenChu_Backend.Controllers;
 [ApiController]
 [Route("api/[controller]")]
-public class BookController :ControllerBase
+public class BookController : ControllerBase
 {
    private readonly IBookService _bookService;
     

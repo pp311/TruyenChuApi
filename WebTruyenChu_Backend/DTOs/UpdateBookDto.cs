@@ -5,7 +5,8 @@ namespace WebTruyenChu_Backend.DTOs;
 
 public class UpdateBookDto
 {
-    public int? BookId { get; set; }
+    [System.Text.Json.Serialization.JsonIgnore] 
+    public int BookId { get; set; }
     [MaxLength(256)]
     [Required]
     public string? BookName { get; set; }

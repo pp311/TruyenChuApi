@@ -23,5 +23,10 @@ public class Profiles : Profile
             .ForMember(bd => bd.Genres, opt => opt.MapFrom(b => b.BookGenres.Select(bg => bg.Genre).ToList()))
             .ForMember(bd => bd.AuthorId, opt => opt.MapFrom(b => b.AuthorId))
             .ForMember(bd => bd.AuthorName, opt => opt.MapFrom(b => b.Author.AuthorName));
+        
+        CreateMap<Chapter, GetChapterDto>();
+        CreateMap<AddChapterDto, Chapter>();
+        CreateMap<UpdateChapterDto, Chapter>();
+
     }
 }

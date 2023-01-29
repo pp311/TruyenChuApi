@@ -10,5 +10,6 @@ public class AddChapterDto
 
     [Required] public string Content { get; set; } = null!;
     
+    [System.Text.Json.Serialization.JsonIgnore] 
     public int BookId { get; set; }}
     

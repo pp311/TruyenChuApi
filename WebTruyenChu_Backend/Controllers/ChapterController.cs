@@ -7,7 +7,7 @@ using WebTruyenChu_Backend.Services.Interfaces;
 
 namespace WebTruyenChu_Backend.Controllers;
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/Book/{bookId:int}/[controller]")]
 public class ChapterController : ControllerBase
 {
    private readonly IChapterService _chapterService;
@@ -19,7 +19,7 @@ public class ChapterController : ControllerBase
        _bookService = bookService;
    }
 
-   [HttpGet("{id:int}", Name = "GetChapterById")]
+   [HttpGet("/api/[controller]/{id:int}", Name = "GetChapterById")]
    public async Task<ActionResult<GetChapterDto>> GetChapterById(int id)
    {
        var chapterDto = await _chapterService.GetChapterById(id);
@@ -27,7 +27,7 @@ public class ChapterController : ControllerBase
        return Ok(chapterDto);
    }
 
-   [HttpGet("list/{bookId:int}")]
+   [HttpGet("list")]
    public async Task<ActionResult<IEnumerable<GetChapterDto>>> GetChapters([FromQuery]PagingParameters filter, int bookId)
    {
       if(await _bookService.GetBookById(bookId) is null) return NotFound();
@@ -46,15 +46,16 @@ public class ChapterController : ControllerBase
    }
 
    [HttpPost]
-   public async Task<ActionResult<GetChapterDto>> AddChapter([FromBody]AddChapterDto? addChapterDto)
+   public async Task<ActionResult<GetChapterDto>> AddChapter([FromBody]AddChapterDto? addChapterDto, int bookId)
    {
        if (addChapterDto is null) return BadRequest();
-       if (await _bookService.GetBookById(addChapterDto.BookId) is null) return NotFound();
+       if (await _bookService.GetBookById(bookId) is null) return NotFound("Book ID not found");
+       addChapterDto.BookId = bookId;
        var newChapterDto = await _chapterService.AddChapter(addChapterDto);
        return CreatedAtRoute(nameof(GetChapterById), new { id = newChapterDto.BookId }, newChapterDto);
    }
    
-   [HttpDelete("{id:int}")]
+   [HttpDelete("/api/[controller]/{id:int}")]
    public async Task<ActionResult> DeleteBookById(int id)
    {
         if(await _chapterService.GetChapterById(id) is null) return NotFound();
@@ -63,12 +64,14 @@ public class ChapterController : ControllerBase
    }
 
    [HttpPut("{id:int}")]
-   public async Task<ActionResult<GetChapterDto>> UpdateChapter([FromBody] UpdateChapterDto? updateChapterDto, int id)
+   public async Task<ActionResult<GetChapterDto>> UpdateChapter([FromBody] UpdateChapterDto? updateChapterDto, int id, int bookId)
    {
        if (updateChapterDto is null) return BadRequest();
+       if (await _bookService.GetBookById(bookId) is null) return NotFound("Book ID not found");
        updateChapterDto.ChapterId = id;
-       var updatedChapterDto = _chapterService.UpdateChapter(updateChapterDto);
-       if(updatedChapterDto is null) return NotFound();
+       updateChapterDto.BookId = bookId;
+       var updatedChapterDto = await _chapterService.UpdateChapter(updateChapterDto);
+       if(updatedChapterDto is null) return NotFound("Chapter ID not found");
        return Ok(updatedChapterDto);
    }
 }

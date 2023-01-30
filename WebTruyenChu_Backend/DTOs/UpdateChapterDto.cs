@@ -10,8 +10,8 @@ public class UpdateChapterDto
     [MaxLength(256)]
     public string? ChapterName { get; set; }
 
-    [Required] public string Content { get; set; } = null!;
+    [Required] 
+    public string Content { get; set; } = null!;
     
-    [System.Text.Json.Serialization.JsonIgnore] 
     public int BookId { get; set; }
 }

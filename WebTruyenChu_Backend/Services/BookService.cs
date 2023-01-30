@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using AutoMapper;
 using Diacritics.Extensions;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using WebTruyenChu_Backend.Constants;
 using WebTruyenChu_Backend.Data;
@@ -152,6 +153,33 @@ public class BookService : IBookService
                 book.BookGenres.Add(new BookGenre {BookId = book.BookId, GenreId = genreId});
         }
         _context.Update(book);
+        await _context.SaveChangesAsync();
+        return await GetBookById(book.BookId);
+    }
+
+    public async Task<GetBookDto?> PartialUpdateBook(int bookId, JsonPatchDocument<UpdateBookDto> patchDoc)
+    {
+        var book = await _context.Books.Include(b => b.BookGenres)
+            .ThenInclude(bg => bg.Genre)
+            .FirstOrDefaultAsync(b => b.BookId == bookId);
+        var bookToPatch = _mapper.Map<UpdateBookDto>(book);
+        patchDoc.ApplyTo(bookToPatch);
+        _mapper.Map(bookToPatch, book);
+        if (_context.Entry(book).Property(b => b.AuthorId).IsModified)
+        {
+            if (await _context.Authors.FindAsync(book.AuthorId) is null) return null;
+        }
+        foreach (var bg in book!.BookGenres.ToList())
+        {
+            if(bookToPatch.GenreIds.Contains(bg.GenreId) is false)
+                book.BookGenres!.Remove(bg);
+        }
+
+        foreach (var genreId in bookToPatch.GenreIds)
+        {
+            if(book.BookGenres.Any(bg => bg.GenreId == genreId) is false)
+                book.BookGenres.Add(new BookGenre {BookId = book.BookId, GenreId = genreId});
+        }
         await _context.SaveChangesAsync();
         return await GetBookById(book.BookId);
     }

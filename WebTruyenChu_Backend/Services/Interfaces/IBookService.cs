@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.JsonPatch;
 using WebTruyenChu_Backend.DTOs;
 using WebTruyenChu_Backend.DTOs.QueryParameters;
 using WebTruyenChu_Backend.DTOs.Responses;
@@ -14,4 +15,5 @@ public interface IBookService
     
     Task<List<BookOverviewDto>> GetRandomBooks(int limit);
     Task<GetBookDto?> UpdateBook(UpdateBookDto updateBookDto);
+    Task<GetBookDto?> PartialUpdateBook(int bookId, JsonPatchDocument<UpdateBookDto> patchDoc);
 }

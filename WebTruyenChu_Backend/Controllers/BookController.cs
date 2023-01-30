@@ -1,3 +1,5 @@
+using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebTruyenChu_Backend.DTOs;
@@ -11,10 +13,12 @@ namespace WebTruyenChu_Backend.Controllers;
 public class BookController : ControllerBase
 {
    private readonly IBookService _bookService;
+   private readonly IMapper _mapper;
     
-   public BookController(IBookService bookService)
+   public BookController(IBookService bookService, IMapper mapper)
    {
        _bookService = bookService;
+       _mapper = mapper;
    }
 
    [HttpPost]
@@ -78,6 +82,26 @@ public class BookController : ControllerBase
         var updatedBookDto = await _bookService.UpdateBook(updateBookDto);
         if (updatedBookDto is null)
             return NotFound();
+        return Ok(updatedBookDto);
+   }
+
+   [HttpPatch("{id:int}")]
+   public async Task<ActionResult<GetBookDto>> PartialUpdateBook(int id,
+       [FromBody] JsonPatchDocument<UpdateBookDto>? patchDoc)
+   {
+        var book = await _bookService.GetBookById(id);
+        if(book is null) return NotFound("Book not found");
+        var patchDto = _mapper.Map<UpdateBookDto>(book);
+        patchDoc.ApplyTo(patchDto);
+        if (!TryValidateModel(patchDto))
+        {
+            var errors = ModelState
+                .Where(x => x.Value.Errors.Count > 0)
+                .Select(x => new { x.Key, x.Value.Errors });
+            return BadRequest(errors);
+        }
+        var updatedBookDto = await _bookService.PartialUpdateBook(id, patchDoc); 
+        if(updatedBookDto is null) return NotFound("Author not found");
         return Ok(updatedBookDto);
    }
 }

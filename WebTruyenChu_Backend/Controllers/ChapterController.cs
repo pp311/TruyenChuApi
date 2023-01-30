@@ -1,3 +1,5 @@
+using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Annotations;
@@ -7,19 +9,21 @@ using WebTruyenChu_Backend.Services.Interfaces;
 
 namespace WebTruyenChu_Backend.Controllers;
 [ApiController]
-[Route("api/Book/{bookId:int}/[controller]")]
+[Route("api/[controller]")]
 public class ChapterController : ControllerBase
 {
    private readonly IChapterService _chapterService;
    private readonly IBookService _bookService;
+   private readonly IMapper _mapper;
 
-   public ChapterController(IChapterService chapterService, IBookService bookService)
+   public ChapterController(IChapterService chapterService, IBookService bookService, IMapper mapper)
    {
        _chapterService = chapterService;
        _bookService = bookService;
+       _mapper = mapper;
    }
 
-   [HttpGet("/api/[controller]/{id:int}", Name = "GetChapterById")]
+   [HttpGet("{id:int}", Name = "GetChapterById")]
    public async Task<ActionResult<GetChapterDto>> GetChapterById(int id)
    {
        var chapterDto = await _chapterService.GetChapterById(id);
@@ -27,8 +31,8 @@ public class ChapterController : ControllerBase
        return Ok(chapterDto);
    }
 
-   [HttpGet("list")]
-   public async Task<ActionResult<IEnumerable<GetChapterDto>>> GetChapters([FromQuery]PagingParameters filter, int bookId)
+   [HttpGet]
+   public async Task<ActionResult<IEnumerable<GetChapterDto>>> GetChapters([FromQuery]PagingParameters filter,[FromQuery] int bookId)
    {
       if(await _bookService.GetBookById(bookId) is null) return NotFound();
       var chaptersDto = await _chapterService.GetChaptersWithPagination(filter, bookId);
@@ -46,16 +50,15 @@ public class ChapterController : ControllerBase
    }
 
    [HttpPost]
-   public async Task<ActionResult<GetChapterDto>> AddChapter([FromBody]AddChapterDto? addChapterDto, int bookId)
+   public async Task<ActionResult<GetChapterDto>> AddChapter([FromBody]AddChapterDto? addChapterDto)
    {
        if (addChapterDto is null) return BadRequest();
-       if (await _bookService.GetBookById(bookId) is null) return NotFound("Book ID not found");
-       addChapterDto.BookId = bookId;
+       if (await _bookService.GetBookById(addChapterDto.BookId) is null) return NotFound("Book ID not found");
        var newChapterDto = await _chapterService.AddChapter(addChapterDto);
        return CreatedAtRoute(nameof(GetChapterById), new { id = newChapterDto.BookId }, newChapterDto);
    }
    
-   [HttpDelete("/api/[controller]/{id:int}")]
+   [HttpDelete("{id:int}")]
    public async Task<ActionResult> DeleteBookById(int id)
    {
         if(await _chapterService.GetChapterById(id) is null) return NotFound();
@@ -64,14 +67,34 @@ public class ChapterController : ControllerBase
    }
 
    [HttpPut("{id:int}")]
-   public async Task<ActionResult<GetChapterDto>> UpdateChapter([FromBody] UpdateChapterDto? updateChapterDto, int id, int bookId)
+   public async Task<ActionResult<GetChapterDto>> UpdateChapter([FromBody] UpdateChapterDto? updateChapterDto, int id)
    {
        if (updateChapterDto is null) return BadRequest();
-       if (await _bookService.GetBookById(bookId) is null) return NotFound("Book ID not found");
+       if (await _bookService.GetBookById(updateChapterDto.BookId) is null) return NotFound("Book ID not found");
        updateChapterDto.ChapterId = id;
-       updateChapterDto.BookId = bookId;
        var updatedChapterDto = await _chapterService.UpdateChapter(updateChapterDto);
        if(updatedChapterDto is null) return NotFound("Chapter ID not found");
        return Ok(updatedChapterDto);
+   }
+
+   [HttpPatch("{id:int}")]
+   public async Task<ActionResult<GetChapterDto>> PartialUpdateChapter(
+       [FromBody] JsonPatchDocument<UpdateChapterDto> patchDoc, int id)
+   {
+        var original = await _chapterService.GetChapterById(id);
+        if (original is null) return NotFound("Chapter not found");
+        var patchDto = _mapper.Map<UpdateChapterDto>(original);
+        patchDoc.ApplyTo(patchDto);
+        if (!TryValidateModel(patchDto))
+        {
+            var errors = ModelState
+                .Where(x => x.Value.Errors.Count > 0)
+                .Select(x => new { x.Key, x.Value.Errors });
+            return BadRequest(errors);
+        }
+
+        var updatedChapterDto = await _chapterService.PartialUpdateChapter(id, patchDoc); 
+        if(updatedChapterDto is null) return NotFound("Book id not found");
+        return Ok(updatedChapterDto);
    }
 }

@@ -14,7 +14,10 @@ public class Profiles : Profile
         CreateMap<Author, GetAuthorDto>();
 
         CreateMap<AddBookDto, Book>();
-        CreateMap<UpdateBookDto, Book>();
+        CreateMap<UpdateBookDto, Book>()
+            .ReverseMap()
+            .ForMember(dto => dto.GenreIds, opt => opt.MapFrom(b => b.BookGenres.Select(bg => bg.GenreId).ToList()));
+        CreateMap<UpdateBookDto, GetBookDto>().ReverseMap();
         CreateMap<Book, BookOverviewDto>()
             .ForMember(bo => bo.Genres, opt => opt.MapFrom(b => b.BookGenres.Select(bg => bg.Genre).ToList()))
             .ForMember(bd => bd.AuthorId, opt => opt.MapFrom(b => b.AuthorId))
@@ -23,10 +26,13 @@ public class Profiles : Profile
             .ForMember(bd => bd.Genres, opt => opt.MapFrom(b => b.BookGenres.Select(bg => bg.Genre).ToList()))
             .ForMember(bd => bd.AuthorId, opt => opt.MapFrom(b => b.AuthorId))
             .ForMember(bd => bd.AuthorName, opt => opt.MapFrom(b => b.Author.AuthorName));
-        
+        CreateMap<GetBookDto, UpdateBookDto>().ForMember(bd => bd.GenreIds,
+            opt => opt.MapFrom(bd => bd.Genres.Select(g => g.GenreId).ToList()));
+
         CreateMap<Chapter, GetChapterDto>();
         CreateMap<AddChapterDto, Chapter>();
-        CreateMap<UpdateChapterDto, Chapter>();
+        CreateMap<UpdateChapterDto, Chapter>().ReverseMap();
+        CreateMap<GetChapterDto, UpdateChapterDto>().ReverseMap();
 
     }
 }

@@ -34,5 +34,6 @@ public class Profiles : Profile
         CreateMap<UpdateChapterDto, Chapter>().ReverseMap();
         CreateMap<GetChapterDto, UpdateChapterDto>().ReverseMap();
 
+        CreateMap<AddUserDto, User>();
     }
 }

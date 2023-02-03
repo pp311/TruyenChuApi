@@ -1,6 +1,6 @@
 namespace WebTruyenChu_Backend.Constants;
 
-public class OrderBy
+public static class OrderBy
 {
     public const string RatingScore = "ratingscore";
     public const string RatingCount = "ratingcount";

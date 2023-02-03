@@ -74,3 +74,8 @@
 /home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/ref/WebTruyenChu_Backend.dll
 /home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/Diacritics.dll
 /home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/Swashbuckle.AspNetCore.Annotations.dll
+/home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/MailKit.dll
+/home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/MimeKit.dll
+/home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/NETCore.MailKit.dll
+/home/pp311/Hoc/WebTruyenChu/WebTruyenChu_Backend/bin/Debug/net6.0/BouncyCastle.Crypto.dll

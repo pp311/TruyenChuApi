@@ -1,7 +1,9 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using WebTruyenChu_Backend.Constants;
 using WebTruyenChu_Backend.DTOs;
 using WebTruyenChu_Backend.DTOs.QueryParameters;
 using WebTruyenChu_Backend.Services;
@@ -55,6 +57,7 @@ public class BookController : ControllerBase
    }
 
    [HttpGet("random")]
+   [Authorize]
    public async Task<ActionResult<IEnumerable<BookOverviewDto>>> GetRandomBooks(int limit = 10)
    {
        return Ok(await _bookService.GetRandomBooks(limit));
@@ -87,7 +90,7 @@ public class BookController : ControllerBase
 
    [HttpPatch("{id:int}")]
    public async Task<ActionResult<GetBookDto>> PartialUpdateBook(int id,
-       [FromBody] JsonPatchDocument<UpdateBookDto>? patchDoc)
+       [FromBody] JsonPatchDocument<UpdateBookDto> patchDoc)
    {
         var book = await _bookService.GetBookById(id);
         if(book is null) return NotFound("Book not found");

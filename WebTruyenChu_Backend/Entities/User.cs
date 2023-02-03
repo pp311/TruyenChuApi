@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 namespace WebTruyenChu_Backend.Entities;
 public class User : IdentityUser<int>
 {
+    public string? Name { get; set; }
     public string? Avatar { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public string? Gender { get; set; }

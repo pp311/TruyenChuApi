@@ -1,6 +1,6 @@
 namespace WebTruyenChu_Backend.Constants;
 
-public class BookStatus
+public static class BookStatus
 {
     public const string OnGoing = "ongoing";
     public const string Completed = "completed";

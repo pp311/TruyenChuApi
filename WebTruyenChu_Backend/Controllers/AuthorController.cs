@@ -2,7 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebTruyenChu_Backend.Constants;
-using WebTruyenChu_Backend.DTOs;
+using WebTruyenChu_Backend.DTOs.Author;
 using WebTruyenChu_Backend.Services.Interfaces;
 
 namespace WebTruyenChu_Backend.Controllers;

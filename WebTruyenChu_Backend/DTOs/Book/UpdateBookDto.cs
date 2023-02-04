@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using WebTruyenChu_Backend.Constants;
 
-namespace WebTruyenChu_Backend.DTOs;
+namespace WebTruyenChu_Backend.DTOs.Book;
 
 public class UpdateBookDto
 {

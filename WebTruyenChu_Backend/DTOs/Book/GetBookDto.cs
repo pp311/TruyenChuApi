@@ -1,6 +1,4 @@
-using WebTruyenChu_Backend.Entities;
-
-namespace WebTruyenChu_Backend.DTOs;
+namespace WebTruyenChu_Backend.DTOs.Book;
 
 public class GetBookDto
 {

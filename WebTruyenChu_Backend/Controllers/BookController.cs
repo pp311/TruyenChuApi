@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebTruyenChu_Backend.Constants;
-using WebTruyenChu_Backend.DTOs;
+using WebTruyenChu_Backend.DTOs.Book;
 using WebTruyenChu_Backend.DTOs.QueryParameters;
-using WebTruyenChu_Backend.Services;
 using WebTruyenChu_Backend.Services.Interfaces;
 
 namespace WebTruyenChu_Backend.Controllers;

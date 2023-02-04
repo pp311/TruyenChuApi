@@ -1,8 +1,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WebTruyenChu_Backend.Data;
-using WebTruyenChu_Backend.DTOs;
-using WebTruyenChu_Backend.Entities;
+using WebTruyenChu_Backend.DTOs.Book;
 using WebTruyenChu_Backend.Services.Interfaces;
 
 namespace WebTruyenChu_Backend.Services;

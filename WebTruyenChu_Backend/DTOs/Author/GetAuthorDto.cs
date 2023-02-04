@@ -1,7 +1,6 @@
-using System.Text.Json.Serialization;
-using WebTruyenChu_Backend.Entities;
+using WebTruyenChu_Backend.DTOs.Book;
 
-namespace WebTruyenChu_Backend.DTOs;
+namespace WebTruyenChu_Backend.DTOs.Author;
 
 public class GetAuthorDto
 {

@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Swashbuckle.AspNetCore.Annotations;
 using WebTruyenChu_Backend.Constants;
-using WebTruyenChu_Backend.DTOs;
+using WebTruyenChu_Backend.DTOs.Chapter;
 using WebTruyenChu_Backend.DTOs.QueryParameters;
 using WebTruyenChu_Backend.Services.Interfaces;
 

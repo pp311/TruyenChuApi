@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using WebTruyenChu_Backend.DTOs;
+using WebTruyenChu_Backend.DTOs.Book;
 using WebTruyenChu_Backend.Services.Interfaces;
 
 namespace WebTruyenChu_Backend.Controllers;

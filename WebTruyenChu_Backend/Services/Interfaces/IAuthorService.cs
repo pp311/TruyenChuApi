@@ -1,4 +1,4 @@
-using WebTruyenChu_Backend.DTOs;
+using WebTruyenChu_Backend.DTOs.Author;
 
 namespace WebTruyenChu_Backend.Services.Interfaces;
 

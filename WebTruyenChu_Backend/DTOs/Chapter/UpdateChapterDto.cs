@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace WebTruyenChu_Backend.DTOs;
+namespace WebTruyenChu_Backend.DTOs.Chapter;
 
 public class UpdateChapterDto
 {

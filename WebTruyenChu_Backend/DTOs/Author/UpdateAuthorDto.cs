@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
 
-namespace WebTruyenChu_Backend.DTOs;
+namespace WebTruyenChu_Backend.DTOs.Author;
 
 public class UpdateAuthorDto
 {

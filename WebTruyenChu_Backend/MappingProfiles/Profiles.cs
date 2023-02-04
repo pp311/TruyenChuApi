@@ -1,5 +1,8 @@
 using AutoMapper;
 using WebTruyenChu_Backend.DTOs;
+using WebTruyenChu_Backend.DTOs.Author;
+using WebTruyenChu_Backend.DTOs.Book;
+using WebTruyenChu_Backend.DTOs.Chapter;
 using WebTruyenChu_Backend.Entities;
 
 namespace WebTruyenChu_Backend.MappingProfiles;

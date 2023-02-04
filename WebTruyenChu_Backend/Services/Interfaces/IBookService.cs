@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.JsonPatch;
-using WebTruyenChu_Backend.DTOs;
+using WebTruyenChu_Backend.DTOs.Book;
 using WebTruyenChu_Backend.DTOs.QueryParameters;
 using WebTruyenChu_Backend.DTOs.Responses;
 

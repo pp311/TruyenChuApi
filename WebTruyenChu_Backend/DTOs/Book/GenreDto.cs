@@ -1,4 +1,4 @@
-namespace WebTruyenChu_Backend.DTOs;
+namespace WebTruyenChu_Backend.DTOs.Book;
 
 public class GenreDto
 {

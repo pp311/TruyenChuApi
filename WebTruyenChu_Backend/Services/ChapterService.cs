@@ -4,7 +4,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using WebTruyenChu_Backend.Data;
-using WebTruyenChu_Backend.DTOs;
+using WebTruyenChu_Backend.DTOs.Chapter;
 using WebTruyenChu_Backend.DTOs.QueryParameters;
 using WebTruyenChu_Backend.DTOs.Responses;
 using WebTruyenChu_Backend.Entities;

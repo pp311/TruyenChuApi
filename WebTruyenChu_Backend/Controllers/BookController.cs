@@ -24,6 +24,7 @@ public class BookController : ControllerBase
    }
 
    [HttpPost]
+   [Authorize(Roles = Role.AdminAndEditor)]
    public async Task<ActionResult<GetBookDto>> AddBook([FromBody]AddBookDto? addBookDto)
    {
         if (addBookDto is null) return BadRequest(); 
@@ -57,13 +58,13 @@ public class BookController : ControllerBase
    }
 
    [HttpGet("random")]
-   [Authorize]
    public async Task<ActionResult<IEnumerable<BookOverviewDto>>> GetRandomBooks(int limit = 10)
    {
        return Ok(await _bookService.GetRandomBooks(limit));
    }
 
    [HttpDelete("{id:int}")]
+   [Authorize(Roles = Role.AdminAndEditor)]
    public async Task<ActionResult> DeleteBook(int id)
    {
        if (await _bookService.GetBookById(id) is null)
@@ -75,6 +76,7 @@ public class BookController : ControllerBase
    }
 
    [HttpPut("{id:int}")]
+   [Authorize(Roles = Role.AdminAndEditor)]
    public async Task<ActionResult<GetBookDto>> UpdateBook(int id, [FromBody] UpdateBookDto? updateBookDto)
    {
         if (updateBookDto is null)
@@ -89,6 +91,7 @@ public class BookController : ControllerBase
    }
 
    [HttpPatch("{id:int}")]
+   [Authorize(Roles = Role.AdminAndEditor)]
    public async Task<ActionResult<GetBookDto>> PartialUpdateBook(int id,
        [FromBody] JsonPatchDocument<UpdateBookDto> patchDoc)
    {

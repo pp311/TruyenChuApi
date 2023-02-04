@@ -8,8 +8,10 @@ namespace WebTruyenChu_Backend.Data;
 
 public class WebTruyenChuContext : IdentityDbContext<User,IdentityRole<int>,int>
 {
-    public WebTruyenChuContext(DbContextOptions<WebTruyenChuContext> options) : base(options)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public WebTruyenChuContext(DbContextOptions<WebTruyenChuContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
     {
+        _httpContextAccessor = httpContextAccessor;
     }
     
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -30,7 +32,7 @@ public class WebTruyenChuContext : IdentityDbContext<User,IdentityRole<int>,int>
             if (entityEntry.State == EntityState.Added)
             {
                 ((AuditableEntity)entityEntry.Entity).CreatedAt = DateTime.Now;
-                //((AuditableEntity)entityEntry.Entity).CreatedBy = this.httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? "MyApp";
+                ((AuditableEntity)entityEntry.Entity).CreatedBy = _httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? "guest";
             }
             else
             {
@@ -44,7 +46,7 @@ public class WebTruyenChuContext : IdentityDbContext<User,IdentityRole<int>,int>
             // In any case we always want to set the properties
             // ModifiedAt and ModifiedBy
             ((AuditableEntity)entityEntry.Entity).ModifiedAt = DateTime.Now;
-            //((AuditableEntity)entityEntry.Entity).ModifiedBy = this.httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? "MyApp";
+            ((AuditableEntity)entityEntry.Entity).ModifiedBy = _httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? "guest";
         }
         return await base.SaveChangesAsync(cancellationToken);
     }

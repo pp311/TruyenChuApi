@@ -1,8 +1,10 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Annotations;
+using WebTruyenChu_Backend.Constants;
 using WebTruyenChu_Backend.DTOs;
 using WebTruyenChu_Backend.DTOs.QueryParameters;
 using WebTruyenChu_Backend.Services.Interfaces;
@@ -50,6 +52,7 @@ public class ChapterController : ControllerBase
    }
 
    [HttpPost]
+   [Authorize(Roles = Role.AdminAndEditor)]
    public async Task<ActionResult<GetChapterDto>> AddChapter([FromBody]AddChapterDto? addChapterDto)
    {
        if (addChapterDto is null) return BadRequest();
@@ -59,6 +62,7 @@ public class ChapterController : ControllerBase
    }
    
    [HttpDelete("{id:int}")]
+   [Authorize(Roles = Role.AdminAndEditor)]
    public async Task<ActionResult> DeleteBookById(int id)
    {
         if(await _chapterService.GetChapterById(id) is null) return NotFound();
@@ -67,6 +71,7 @@ public class ChapterController : ControllerBase
    }
 
    [HttpPut("{id:int}")]
+   [Authorize(Roles = Role.AdminAndEditor)]
    public async Task<ActionResult<GetChapterDto>> UpdateChapter([FromBody] UpdateChapterDto? updateChapterDto, int id)
    {
        if (updateChapterDto is null) return BadRequest();
@@ -78,6 +83,7 @@ public class ChapterController : ControllerBase
    }
 
    [HttpPatch("{id:int}")]
+   [Authorize(Roles = Role.AdminAndEditor)]
    public async Task<ActionResult<GetChapterDto>> PartialUpdateChapter(
        [FromBody] JsonPatchDocument<UpdateChapterDto> patchDoc, int id)
    {

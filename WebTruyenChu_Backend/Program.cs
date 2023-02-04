@@ -16,15 +16,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.ConfigureCors();
 builder.Services.AddServices();
+
 var emailConfig = builder.Configuration
         .GetSection("EmailConfiguration")
         .Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+
 builder.Services.AddDbContext<WebTruyenChuContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("WebTruyenChuContext"));
 });
+
 builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 {
         options.SignIn.RequireConfirmedAccount = false;

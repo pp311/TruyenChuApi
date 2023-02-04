@@ -1,5 +1,7 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebTruyenChu_Backend.Constants;
 using WebTruyenChu_Backend.DTOs;
 using WebTruyenChu_Backend.Services.Interfaces;
 
@@ -17,6 +19,7 @@ public class AuthorController : ControllerBase
     }
     
     [HttpPost]
+   [Authorize(Roles = Role.AdminAndEditor)]
     public async Task<ActionResult<GetAuthorDto>> AddAuthor([FromBody]AddAuthorDto? authorAddDto)
     {
         if (authorAddDto == null) return BadRequest(); 
@@ -42,6 +45,7 @@ public class AuthorController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [Authorize(Roles = Role.AdminAndEditor)]
     public async Task<ActionResult<GetAuthorDto>> UpdateAuthor(int id, UpdateAuthorDto? updateAuthorDto)
     {
         if (updateAuthorDto is null)
@@ -59,6 +63,7 @@ public class AuthorController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = Role.AdminAndEditor)]
     public async Task<ActionResult> DeleteAuthor(int id)
     {
         if (await _authorService.GetAuthorById(id) is null)

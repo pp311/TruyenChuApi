@@ -3,6 +3,7 @@ using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -25,7 +26,7 @@ public class AccountController : ControllerBase
     private readonly IConfigurationSection _jwtSettings;
     private readonly IEmailSender _emailSender;
 
-    public AccountController(UserManager<User> userManager, IMapper mapper, IConfiguration configuration, IEmailSender emailSender)
+    public AccountController(UserManager<User> userManager, IMapper mapper, IConfiguration configuration, IEmailSender emailSender, IHttpContextAccessor httpContextAccessor)
     {
         _userManager = userManager;
         _mapper = mapper;
@@ -87,6 +88,7 @@ public class AccountController : ControllerBase
         audience: _jwtSettings["validAudience"],
         claims: new List<Claim>
         {
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new(ClaimTypes.Name, user.UserName),
             new(ClaimTypes.Email, user.Email),
             new(ClaimTypes.Name, user.Name ?? ""),

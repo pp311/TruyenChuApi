@@ -38,5 +38,10 @@ public class Profiles : Profile
         CreateMap<GetChapterDto, UpdateChapterDto>().ReverseMap();
 
         CreateMap<AddUserDto, User>();
+        CreateMap<UpdateUserDto, User>()
+            .ForMember(u => u.Id, opt => opt.MapFrom(dto => dto.UserId))
+            .ReverseMap()
+            .ForMember(dto => dto.UserId, opt => opt.MapFrom(u => u.Id));
+        CreateMap<User, GetUserDto>().ForMember(dto => dto.UserId, opt => opt.MapFrom(u => u.Id));
     }
 }

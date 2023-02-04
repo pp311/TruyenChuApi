@@ -24,5 +24,6 @@ public static class ServiceExtension
         services.AddScoped<IAuthorService, AuthorService>();
         services.AddScoped<IGenreService, GenreService>();
         services.AddScoped<IChapterService, ChapterService>();
+        services.AddScoped<IUserService, UserService>();
     }
 }

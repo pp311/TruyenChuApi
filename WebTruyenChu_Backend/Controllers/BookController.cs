@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using WebTruyenChu_Backend.Constants;
 using WebTruyenChu_Backend.DTOs.Book;
@@ -14,12 +16,14 @@ namespace WebTruyenChu_Backend.Controllers;
 public class BookController : ControllerBase
 {
    private readonly IBookService _bookService;
+   private readonly ISavedBookService _savedBookService;
    private readonly IMapper _mapper;
     
-   public BookController(IBookService bookService, IMapper mapper)
+   public BookController(IBookService bookService, IMapper mapper, ISavedBookService savedBookService)
    {
        _bookService = bookService;
        _mapper = mapper;
+       _savedBookService = savedBookService;
    }
 
    [HttpPost]
@@ -108,5 +112,35 @@ public class BookController : ControllerBase
         var updatedBookDto = await _bookService.PartialUpdateBook(id, patchDoc); 
         if(updatedBookDto is null) return NotFound("Author not found");
         return Ok(updatedBookDto);
+   }
+
+   [HttpPost("follow")]
+   [Authorize]
+   public async Task<ActionResult> FollowBook(int bookId)
+   {
+       try
+       {
+           await _savedBookService.FollowBook(bookId, Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+       }
+       catch (DbUpdateConcurrencyException)
+       {
+           return NotFound("Book not found");
+       }
+       return Ok();
+   }
+   
+   [HttpPost("unfollow")]
+   [Authorize]
+   public async Task<ActionResult> UnfollowBook(int bookId)
+   {
+       try
+       {
+            await _savedBookService.UnfollowBook(bookId, Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+       }
+       catch (DbUpdateConcurrencyException)
+       {
+           return NotFound("Book not found");
+       }
+       return Ok();
    }
 }

@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using WebTruyenChu_Backend.Constants;
 using WebTruyenChu_Backend.DTOs.Chapter;
@@ -15,13 +17,15 @@ public class ChapterController : ControllerBase
 {
    private readonly IChapterService _chapterService;
    private readonly IBookService _bookService;
+   private readonly IReadingHistoryService _readingHistoryService;
    private readonly IMapper _mapper;
 
-   public ChapterController(IChapterService chapterService, IBookService bookService, IMapper mapper)
+   public ChapterController(IChapterService chapterService, IBookService bookService, IMapper mapper, IReadingHistoryService readingHistoryService)
    {
        _chapterService = chapterService;
        _bookService = bookService;
        _mapper = mapper;
+       _readingHistoryService = readingHistoryService;
    }
 
    [HttpGet("{id:int}", Name = "GetChapterById")]
@@ -101,5 +105,35 @@ public class ChapterController : ControllerBase
         var updatedChapterDto = await _chapterService.PartialUpdateChapter(id, patchDoc); 
         if(updatedChapterDto is null) return NotFound("Book id not found");
         return Ok(updatedChapterDto);
+   }
+   
+   [HttpPost("add-viewcount")]
+   [Authorize]
+   public async Task<ActionResult> AddReadingHistory(int chapterId)
+   {
+       try
+       {
+           await _readingHistoryService.AddReadingHistory(chapterId, Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+       }
+       catch (DbUpdateConcurrencyException)
+       {
+           return NotFound("Chapter not found");
+       }
+       return Ok();
+   }
+   
+   [HttpDelete("remove-viewcount")]
+   [Authorize]
+   public async Task<ActionResult> RemoveReadingHistory(int chapterId)
+   {
+       try
+       {
+            await _readingHistoryService.RemoveReadingHistory(chapterId, Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+       }
+       catch (DbUpdateConcurrencyException)
+       {
+           return NotFound("Chapter not found");
+       }
+       return Ok();
    }
 }

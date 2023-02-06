@@ -129,7 +129,7 @@ public class BookController : ControllerBase
        return Ok();
    }
    
-   [HttpPost("unfollow")]
+   [HttpDelete("unfollow")]
    [Authorize]
    public async Task<ActionResult> UnfollowBook(int bookId)
    {

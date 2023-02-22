@@ -78,7 +78,7 @@ public class WebTruyenChuContext : IdentityDbContext<User,IdentityRole<int>,int>
     }
     
     public DbSet<Author> Authors { get; set; }
-    public DbSet<User> Users { get; set; }
+    //public DbSet<User> Users { get; set; }
     public DbSet<Book> Books { get; set; }
     public DbSet<SavedBook> SavedBooks { get; set; }
     public DbSet<Chapter> Chapters { get; set; }
@@ -88,7 +88,7 @@ public class WebTruyenChuContext : IdentityDbContext<User,IdentityRole<int>,int>
     public DbSet<ReadingHistory> ReadingHistories { get; set; }
     public DbSet<Genre> Genres { get; set; }
     public DbSet<BookGenre> BookGenres { get; set; }
-    public DbSet<BookComment> CommentEntities { get; set; }
+    public DbSet<BookComment> BookComments { get; set; }
     public DbSet<ChapterComment> ChapterComments { get; set; }
 
 

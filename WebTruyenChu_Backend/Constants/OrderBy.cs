@@ -13,4 +13,8 @@ public static class OrderBy
     public const string SavedCount = "savedcount";
     public const string LatestUploaded = "latestuploaded";
     public const string LatestUpdated = "latestupdated";
+    
+    public const string LikeCount = "likecount";
+    public const string Oldest = "oldest";
+    public const string Newest = "newest";
 }

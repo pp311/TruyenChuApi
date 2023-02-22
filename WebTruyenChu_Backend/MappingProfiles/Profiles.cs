@@ -3,6 +3,7 @@ using WebTruyenChu_Backend.DTOs;
 using WebTruyenChu_Backend.DTOs.Author;
 using WebTruyenChu_Backend.DTOs.Book;
 using WebTruyenChu_Backend.DTOs.Chapter;
+using WebTruyenChu_Backend.DTOs.Comment;
 using WebTruyenChu_Backend.Entities;
 
 namespace WebTruyenChu_Backend.MappingProfiles;
@@ -43,5 +44,19 @@ public class Profiles : Profile
             .ReverseMap()
             .ForMember(dto => dto.UserId, opt => opt.MapFrom(u => u.Id));
         CreateMap<User, GetUserDto>().ForMember(dto => dto.UserId, opt => opt.MapFrom(u => u.Id));
+
+        CreateMap<AddBookCommentDto, BookComment>();
+        CreateMap<AddChapterCommentDto, ChapterComment>();
+        CreateMap<BookComment, GetCommentDto>()
+            .ForMember(dto => dto.Time, opt => opt.MapFrom(bc => bc.ModifiedAt))
+            .ForMember(dto => dto.UserName, opt => opt.MapFrom(c => c.User.UserName))
+            .ForMember(dto => dto.Avatar, opt => opt.MapFrom(c => c.User.Avatar));
+        CreateMap<BookComment, GetBookCommentDto>();
+        CreateMap<ChapterComment, GetCommentDto>()
+            .ForMember(dto => dto.Time, opt => opt.MapFrom(bc => bc.ModifiedAt))
+            .ForMember(dto => dto.UserName, opt => opt.MapFrom(c => c.User.UserName))
+            .ForMember(dto => dto.Avatar, opt => opt.MapFrom(c => c.User.Avatar));
+        CreateMap<ChapterComment, GetChapterCommentDto>();
+        CreateMap<UpdateCommentDto, Comment>();
     }
 }

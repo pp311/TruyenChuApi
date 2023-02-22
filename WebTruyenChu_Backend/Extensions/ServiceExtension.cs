@@ -27,5 +27,6 @@ public static class ServiceExtension
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ISavedBookService, SavedBookService>();
         services.AddScoped<IReadingHistoryService, ReadingHistoryService>();
+        services.AddScoped<ICommentService, CommentService>();
     }
 }

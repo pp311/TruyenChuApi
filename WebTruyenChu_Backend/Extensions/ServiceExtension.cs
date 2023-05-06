@@ -13,7 +13,8 @@ public static class ServiceExtension
               options.AddPolicy("CorsPolicy",
                   builder => builder.AllowAnyOrigin()
                   .AllowAnyMethod()
-                  .AllowAnyHeader());
+                  .AllowAnyHeader()
+                  .WithExposedHeaders("*"));
           });
     }
 

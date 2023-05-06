@@ -65,6 +65,12 @@ public class BookController : ControllerBase
    {
        return Ok(await _bookService.GetRandomBooks(limit));
    }
+   
+   [HttpGet("ranking")]
+   public async Task<ActionResult<IEnumerable<BookRankingDto>>> GetBookRanking(string? orderBy = OrderBy.ViewCount, int limit = 10)
+   {
+       return Ok(await _bookService.GetBookRanking(orderBy, limit));
+   }
 
    [HttpDelete("{id:int}")]
    [Authorize(Roles = Role.AdminAndEditor)]

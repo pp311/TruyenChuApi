@@ -34,6 +34,10 @@ public class Profiles : Profile
             opt => opt.MapFrom(bd => bd.Genres.Select(g => g.GenreId).ToList()));
 
         CreateMap<Chapter, GetChapterDto>();
+        CreateMap<Chapter, GetChapterDetailDto>()
+          .ForMember(dto => dto.BookName, opt => opt.MapFrom(c => c.Book.BookName))
+          .ForMember(dto => dto.AuthorName, opt => opt.MapFrom(c => c.Book.Author.AuthorName))
+          .ForMember(dto => dto.AuthorId, opt => opt.MapFrom(c => c.Book.AuthorId));
         CreateMap<AddChapterDto, Chapter>();
         CreateMap<UpdateChapterDto, Chapter>().ReverseMap();
         CreateMap<GetChapterDto, UpdateChapterDto>().ReverseMap();

@@ -22,11 +22,17 @@ public class ChapterService : IChapterService
         _context = context;
         _mapper = mapper;
     }
-    
-    public async Task<GetChapterDto?> GetChapterById(int id)
+
+    public async Task<GetChapterDetailDto?> GetChapterById(int id)
     {
-        var chapter = await _context.Chapters.AsNoTracking().FirstOrDefaultAsync(x => x.ChapterId == id);
-        return _mapper.Map<GetChapterDto>(chapter);
+        var chapter = await _context.Chapters.AsNoTracking().Include(c => c.Book).FirstOrDefaultAsync(x => x.ChapterId == id);
+        var chapterDto = _mapper.Map<GetChapterDetailDto>(chapter);
+        var chaptersList = await _context.Chapters.AsNoTracking().Where(x => x.BookId == chapter.BookId).OrderBy(x => x.ChapterIndex).ToListAsync();
+
+        chapterDto.BookName = chapter.Book.BookName;
+        chapterDto.PreviousChapterId = chapterDto.ChapterIndex == 1 ? 0 : chaptersList.Find(x => x.ChapterIndex == chapterDto.ChapterIndex - 1)!.ChapterId;
+        chapterDto.NextChapterId = chapterDto.ChapterIndex == chaptersList.Count ? 0 : chaptersList.Find(x => x.ChapterIndex == chapterDto.ChapterIndex + 1)!.ChapterId;
+        return chapterDto;
     }
 
     public async Task<PagedResult<List<GetChapterDto>>> GetChaptersWithPagination(PagingParameters filter, int bookId)
@@ -46,6 +52,20 @@ public class ChapterService : IChapterService
         var totalCount = await _context.Chapters.CountAsync(x => x.BookId == bookId);
         return new PagedResult<List<GetChapterDto>>(chapterList, totalCount, filter.PageIndex, filter.PageSize);
     }
+
+    public async Task<List<GetChapterDetailDto>> GetLatestChapters(int limit)
+    {
+        var chapterList = await _context.Chapters.AsNoTracking()
+            .Include(c => c.Book)
+            .ThenInclude(b => b.Author)
+            .GroupBy(c => c.BookId)
+            .Select(c => c.OrderByDescending(c => c.CreatedAt).First())
+            .Take(limit)
+            // .OrderByDescending(g => g.CreatedAt)
+            .ToListAsync();
+        return _mapper.Map<List<GetChapterDetailDto>>(chapterList);
+    }
+
 
     public async Task<GetChapterDto> AddChapter(AddChapterDto addChapterDto)
     {
@@ -79,7 +99,7 @@ public class ChapterService : IChapterService
         var chapterToPatch = _mapper.Map<UpdateChapterDto>(chapter);
         patchDoc.ApplyTo(chapterToPatch);
         _mapper.Map(chapterToPatch, chapter);
-        
+
         if (_context.Entry(chapter).Property(c => c.Content).IsModified)
         {
             (chapter.WordCount, chapter.Content) = TrimAndCountWord(chapterToPatch.Content);
@@ -95,7 +115,7 @@ public class ChapterService : IChapterService
 
     private (int wc, string res) TrimAndCountWord(string content)
     {
-        var regex = new Regex("[ ]{2,}", RegexOptions.None);     
+        var regex = new Regex("[ ]{2,}", RegexOptions.None);
         content = regex.Replace(content.Trim(), " ");
         return (content.Split().Length, content);
     }

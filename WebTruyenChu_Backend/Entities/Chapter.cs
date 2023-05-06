@@ -9,7 +9,7 @@ public class Chapter : AuditableEntity
     }
     public int ChapterId { get; set; }
     public string? ChapterName { get; set; } 
-    //public int ChapterIndex { get; set; }
+    public int ChapterIndex { get; set; }
     public string? Content { get; set; }
     public int WordCount { get; set; }
     public int BookId { get; set; }

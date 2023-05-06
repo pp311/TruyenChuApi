@@ -11,6 +11,9 @@ public class GetBookDto
     public long ViewCount { get; set; }
     public int AuthorId { get; set; }
     public string? AuthorName { get; set; }
+    public double Rating { get; set; }
+    public int RatingCount { get; set; }
+    public int ChapterCount {get; set;}
     public DateTime? CreatedAt { get; set; }
     public DateTime? ModifiedAt { get; set; }
     public List<GenreDto>? Genres { get; set; }

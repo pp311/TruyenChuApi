@@ -71,6 +71,8 @@ public class ChapterService : IChapterService
     {
         (var wordCount, addChapterDto.Content) = TrimAndCountWord(addChapterDto.Content);
         var chapter = _mapper.Map<Chapter>(addChapterDto);
+        var lastChapter = await _context.Chapters.Where(x => x.BookId == chapter.BookId).OrderByDescending(x => x.ChapterIndex).FirstOrDefaultAsync();
+        chapter.ChapterIndex = lastChapter is null ? 1 : lastChapter.ChapterIndex + 1;
         chapter.WordCount = wordCount;
         _context.Add(chapter);
         await _context.SaveChangesAsync();
@@ -86,11 +88,24 @@ public class ChapterService : IChapterService
 
     public async Task<GetChapterDto?> UpdateChapter(UpdateChapterDto updateChapterDto)
     {
-        var chapter = _mapper.Map<Chapter>(updateChapterDto);
-        (chapter.WordCount, chapter.Content) = TrimAndCountWord(updateChapterDto.Content);
-        _context.Update(chapter);
+        var chapters = await _context.Chapters.Where(x => x.BookId == updateChapterDto.BookId).ToListAsync();
+        var updateChapter = chapters.Find(x => x.ChapterId == updateChapterDto.ChapterId);
+        (updateChapter.WordCount, updateChapter.Content) = TrimAndCountWord(updateChapterDto.Content);
+        if (updateChapterDto.ChapterIndex is not null)
+        {
+            updateChapter.ChapterIndex = (int)updateChapterDto.ChapterIndex;
+            int chapterIndex = updateChapterDto.ChapterIndex.Value;
+            if (chapterIndex > chapters.Count) chapterIndex = chapters.Count;
+            chapters.Remove(updateChapter);
+            chapters.Insert(chapterIndex - 1, updateChapter);
+            for (int i = 0; i < chapters.Count; i++)
+            {
+                chapters[i].ChapterIndex = i + 1;
+            }
+            _context.UpdateRange(chapters);
+        }
         await _context.SaveChangesAsync();
-        return _mapper.Map<GetChapterDto>(chapter);
+        return _mapper.Map<GetChapterDto>(updateChapter);
     }
 
     public async Task<GetChapterDto?> PartialUpdateChapter(int chapterId, JsonPatchDocument<UpdateChapterDto> patchDoc)

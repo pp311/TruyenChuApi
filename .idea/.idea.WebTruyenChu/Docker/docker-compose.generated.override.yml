@@ -1,0 +1,18 @@
+# This is a generated file. Not intended for manual editing.
+version: "3"
+services:
+  webtruyenchu_backend:
+    build:
+      context: "/home/pp311/Hoc/TruyenChuApi"
+      dockerfile: "WebTruyenChu_Backend/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net6.0/WebTruyenChu_Backend.dll"
+    environment: {}
+    image: "webtruyenchu_backend:dev"
+    ports: []
+    volumes:
+    - "/home/pp311/Hoc/TruyenChuApi/WebTruyenChu_Backend:/app:rw"
+    working_dir: "/app"

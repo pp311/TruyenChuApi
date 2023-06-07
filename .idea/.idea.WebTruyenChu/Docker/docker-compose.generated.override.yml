@@ -1,10 +1,10 @@
 # This is a generated file. Not intended for manual editing.
 version: "3"
 services:
-  webtruyenchu_backend:
+  api:
     build:
-      context: "/home/pp311/Hoc/TruyenChuApi"
-      dockerfile: "WebTruyenChu_Backend/Dockerfile"
+      context: "/home/pp311/Hoc/TruyenChuApi/WebTruyenChu_Backend"
+      dockerfile: "Dockerfile"
       target: "base"
     command: []
     entrypoint:
@@ -14,5 +14,7 @@ services:
     image: "webtruyenchu_backend:dev"
     ports: []
     volumes:
+    - "/home/pp311/.aspnet/https:/root/.aspnet/https"
+    - "/home/pp311/.microsoft/usersecrets:/root/.microsoft/usersecrets"
     - "/home/pp311/Hoc/TruyenChuApi/WebTruyenChu_Backend:/app:rw"
     working_dir: "/app"

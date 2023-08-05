@@ -27,6 +27,9 @@ public class BookController : ControllerBase
    }
 
    [HttpPost]
+   [ProducesResponseType(StatusCodes.Status201Created)]
+   [ProducesResponseType(StatusCodes.Status400BadRequest)]
+   [Consumes("application/json")]
    [Authorize(Roles = Role.AdminAndEditor)]
    public async Task<ActionResult<GetBookDto>> AddBook([FromBody]AddBookDto? addBookDto)
    {
